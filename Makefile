@@ -7,16 +7,22 @@ color_green  := $(shell tput -Txterm setaf 2)
 color_yellow := $(shell tput -Txterm setaf 3)
 color_clear 	 := $(shell tput -Txterm sgr0)
 
-all: clean config
-	@(echo "\n${color_yellow}Running make${color_clear}")
+all: clean config build run
+
+build: config
+	@(echo "\n${color_green}Building ${executable_name}${color_clear}")
+	@(echo "${color_yellow}Running make${color_clear}")
 	@(cd ${build_dir} && make)
-	@(echo "\n${color_green}Running executable: ${executable_name}${color_clear}")
-	@(./${build_dir}/${executable_name})
 
 config: clean
 	@(echo "\n${color_yellow}Running config${color_clear}")
 	@mkdir ${build_dir}
 	@(cd ${build_dir} && cmake ..)
+
+run:
+	@(echo "\n${color_green}Running executable: ${executable_name}${color_clear}")
+	@(./${build_dir}/${executable_name})
+	@(echo "\n${color_green}Finished successfuly!${color_clear}")
 
 clean:
 	@(echo "\n${color_yellow}Running clean${color_clear}")
