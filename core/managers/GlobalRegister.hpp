@@ -50,16 +50,18 @@ public:
         return returnCode;
     }
 
-    template <typename T>
-    void registerManager()
+    template <typename T, typename... _Args>
+    static void registerManager(_Args&&... args)
     {
-        registeredManagers.insert(std::make_shared<T>());
+        T* manager = new T(std::forward(args...));
     }
 private:
-    std::set<std::shared_ptr<IManager>> registeredManagers;
+    static std::set<std::shared_ptr<IManager>> registeredManagers;
 };
 
 }
 }
+
+#define REGISTER_MANAGER(MANAGER, ...) vEngine::Core::GlobalRegister::registerManager<MANAGER>(std::forward(__VA_ARGS__));
 
 #endif // GLOBAL_REGISTER_HPP

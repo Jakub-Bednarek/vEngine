@@ -44,7 +44,6 @@ void Application::initialize()
     std::cout << "Initializing application";
 
     globalRegister = std::make_shared<GlobalRegister>();
-    globalRegister->registerManager<LogManager>();
     globalRegister->startManagers();
 
     initialized = true;

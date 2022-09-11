@@ -2,6 +2,9 @@
 #define LOG_MANAGER_HPP
 
 #include "IManager.hpp"
+#include "GlobalRegister.hpp"
+
+#include <string>
 
 namespace vEngine
 {
@@ -11,7 +14,7 @@ namespace Core
 class LogManager : public IManager
 {
 public:
-    LogManager();
+    LogManager(const std::string& logPath);
     ~LogManager() = default;
 
     std::uint8_t startUp() override;
@@ -20,6 +23,8 @@ public:
 
 }
 }
+
+vEngine::Core::GlobalRegister::registerManager<vEngine::Core::LogManager>("123");
 
 
 #endif // LOG_MANAGER_HPP

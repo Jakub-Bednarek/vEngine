@@ -5,9 +5,9 @@ namespace vEngine
 namespace Core
 {
 
-LogManager::LogManager()
+LogManager::LogManager(const std::string& logPath)
 {
-    std::cout << "Creating LogManager!\n";
+    std::cout << "Creating LogManager with path: " << logPath << "\n";
 }
 
 std::uint8_t LogManager::startUp()
@@ -17,7 +17,7 @@ std::uint8_t LogManager::startUp()
     return 0;
 }
 
-std::uint8_t LogManager::shutDown()
+std::uint8_t LogManager::shutDown() 
 {
     std::cout << "LogManager is shutting down :(\n";
 
