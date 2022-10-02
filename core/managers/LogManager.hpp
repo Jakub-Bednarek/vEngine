@@ -14,8 +14,8 @@ namespace Core
 class LogManager : public IManager
 {
 public:
-    LogManager(const std::string& logPath);
-    ~LogManager() = default;
+    LogManager(const std::string& logFileName);
+    ~LogManager() override = default;
 
     std::uint8_t startUp() override;
     std::uint8_t shutDown() override;
@@ -23,8 +23,6 @@ public:
 
 }
 }
-
-vEngine::Core::GlobalRegister::registerManager<vEngine::Core::LogManager>("123");
 
 
 #endif // LOG_MANAGER_HPP

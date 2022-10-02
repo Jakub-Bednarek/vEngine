@@ -3,8 +3,7 @@ SET(CORE_HEADER_FILES
     
 SET(CORE_SOURCE_FILES
     Application.cpp
-    managers/LogManager.cpp
-    managers/GlobalRegister.cpp)
+    managers/LogManager.cpp)
 
 add_library(Core
     ${CORE_HEADER_FILES}

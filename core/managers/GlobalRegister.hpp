@@ -51,12 +51,12 @@ public:
     }
 
     template <typename T, typename... _Args>
-    static void registerManager(_Args&&... args)
+    void registerManager(_Args&&... args)
     {
-        T* manager = new T(std::forward(args...));
+        registeredManagers.insert(std::make_shared<T>(std::forward<_Args...>(args...)));
     }
 private:
-    static std::set<std::shared_ptr<IManager>> registeredManagers;
+    std::set<std::shared_ptr<IManager>> registeredManagers;
 };
 
 }

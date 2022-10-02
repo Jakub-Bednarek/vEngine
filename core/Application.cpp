@@ -41,9 +41,10 @@ std::shared_ptr<Application> Application::getInstance()
 
 void Application::initialize()
 {
-    std::cout << "Initializing application";
+    std::cout << "Initializing application.\n";
 
     globalRegister = std::make_shared<GlobalRegister>();
+    globalRegister->registerManager<vEngine::Core::LogManager>("logFile.txt");
     globalRegister->startManagers();
 
     initialized = true;
