@@ -1,22 +1,35 @@
 #ifndef IMANAGER_HPP
 #define IMANAGER_HPP
 
-#include <cstdint>
-#include <set>
-#include <iostream>
-#include <typeinfo>
+#include "Singleton.hpp"
+
+#include <any>
+#include <vector>
 #include <memory>
+#include <iostream>
 
 namespace vEngine
 {
 namespace Core
 {
 
-class IManager
+template <typename T, typename... Managers>
+class IManager : public Singleton<T>
 {
 public:
-    IManager() = default;
-    virtual ~IManager() = default;
+    IManager()
+    {
+        if constexpr(sizeof...(Managers) > 0)
+        {
+            createDependencies<Managers...>();
+        }
+
+        std::cout << "Creating " << typeid(T).name() << '\n';
+    }
+    virtual ~IManager()
+    {
+        std::cout << "Destructing " << typeid(T).name() << '\n';
+    }
 
     virtual std::uint8_t startUp() = 0;
     virtual std::uint8_t shutDown() = 0;
@@ -56,9 +69,22 @@ public:
         std::cout << "Successfuly shut down " << managerName << '\n';
         return 0;
     }
+
 protected:
-    std::set<std::shared_ptr<IManager>> dependencies {};
-    bool initialized { false };
+    template <typename Manager, typename... Args, std::enable_if_t<sizeof...(Args) != 0>>
+    void createDependencies()
+    {
+        dependencies.push_back(Manager::create());
+        createDependencies<Args...>();
+    }
+
+    template <typename Manager, typename... Args, std::enable_if_t<sizeof...(Args) == 0>>
+    void createDependencies()
+    {
+        dependencies.push_back(Manager::create());
+    }
+private:
+    std::vector<IManager<std::any>*> dependencies {};
 };
 
 }

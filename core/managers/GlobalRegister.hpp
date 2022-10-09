@@ -2,6 +2,10 @@
 #define GLOBAL_REGISTER_HPP
 
 #include "IManager.hpp"
+#include "LogManager.hpp"
+
+#include <variant>
+#include <vector>
 
 namespace vEngine
 {
@@ -11,57 +15,44 @@ namespace Core
 class GlobalRegister
 {
 public:
+    using SupportedManagers = std::variant<LogManager*>;
+
     GlobalRegister() = default;
     ~GlobalRegister() = default;
 
-    std::uint8_t startManagers()
+    void startupManagers()
     {
-        std::cout << "GlobalRegister is starting all managers\n";
+        std::cout << "Starting up managers\n";
 
-        auto returnCode { 0 };
         for(auto& manager : registeredManagers)
         {
-            returnCode = manager->startUpDependecies();
-
-            if(!returnCode)
-            {
-                returnCode = manager->startUp();
-            }
+            std::visit([](auto&& arg) { arg->startUpDependecies(); arg->startUp(); }, manager);
         }
-
-        return returnCode;
     }
 
-    std::uint8_t shutDownManagers()
+    void shutDownManagers()
     {
-        std::cout << "GlobalRegister is shutting down all managers\n";
+        std::cout << "Shutting down managers\n";
 
-        auto returnCode { 0 };
         for(auto& manager : registeredManagers)
         {
-            returnCode = manager->shutDownDependencies();
-
-            if(!returnCode)
-            {
-                returnCode = manager->shutDown();
-            }
+            std::visit([](auto&& arg) { arg->shutDownDependencies(); arg->shutDown(); }, manager);
         }
-
-        return returnCode;
     }
 
-    template <typename T, typename... _Args>
-    void registerManager(_Args&&... args)
+    void registerManagers()
     {
-        registeredManagers.insert(std::make_shared<T>(std::forward<_Args...>(args...)));
+        std::cout << "Registering managers\n";
+
+        auto manager = LogManager::create();
+        registeredManagers.push_back(SupportedManagers(LogManager::create()));
     }
+
 private:
-    std::set<std::shared_ptr<IManager>> registeredManagers;
+    std::vector<SupportedManagers> registeredManagers {};
 };
 
 }
 }
-
-#define REGISTER_MANAGER(MANAGER, ...) vEngine::Core::GlobalRegister::registerManager<MANAGER>(std::forward(__VA_ARGS__));
 
 #endif // GLOBAL_REGISTER_HPP

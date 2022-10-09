@@ -1,8 +1,6 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "managers/GlobalRegister.hpp"
-
 #include <memory>
 
 namespace vEngine
@@ -25,7 +23,6 @@ public:
 private:
     static std::shared_ptr<Application> instance;
 
-    std::shared_ptr<GlobalRegister> globalRegister;
     bool initialized;
     bool cleanedUp;
 };

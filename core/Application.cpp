@@ -10,12 +10,11 @@ namespace Core
 {
 std::shared_ptr<Application> Application::instance;
 
-Application::Application() : globalRegister(nullptr), initialized(false), cleanedUp(false) {}
+Application::Application() : initialized(false), cleanedUp(false) {}
 Application::~Application()
 {
     if(!cleanedUp)
     {
-        std::cout << "Destroying Application before shut down procedure!\n";
         cleanUp();
     }
 }
@@ -43,18 +42,12 @@ void Application::initialize()
 {
     std::cout << "Initializing application.\n";
 
-    globalRegister = std::make_shared<GlobalRegister>();
-    globalRegister->registerManager<vEngine::Core::LogManager>("logFile.txt");
-    globalRegister->startManagers();
-
     initialized = true;
 }
 
 void Application::cleanUp()
 {
     std::cout << "Cleaning up to shut down application\n";
-
-    globalRegister->shutDownManagers();
 }
 
 void Application::run()
