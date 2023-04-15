@@ -3,8 +3,9 @@
 
 int main()
 {
-    auto app = vEngine::Core::Application::createInstance();
+    auto app = vEngine::core::Application::createInstance();
 
+    app->initialize();
     app->run();
 
     return 0;

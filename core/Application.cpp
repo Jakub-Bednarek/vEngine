@@ -2,11 +2,10 @@
 
 #include <iostream>
 
-namespace vEngine
+namespace vEngine::core
 {
-namespace Core
-{
-std::shared_ptr<Application> Application::instance;
+
+Application::Application() : isInitialized(false) {}
 
 std::shared_ptr<Application> Application::createInstance()
 {
@@ -22,9 +21,33 @@ std::shared_ptr<Application> Application::createInstance()
     return Application::instance;
 }
 
+bool Application::initialize()
+{
+    window = WindowFactory::createWindow();
+
+    if(!window)
+    {
+        return false;
+    }
+
+    window->initialize();
+
+    isInitialized = true;
+
+    return true;
+}
+
 void Application::run()
 {
-    std::cout << "Running!\n";
-}
+    if(!isInitialized)
+    {
+        std::cout << "Initialize application before running!\n";
+        return;
+    }
+
+    while(window->update())
+    {
+        std::cout << "Window updated!\n";
+    }
 }
 }

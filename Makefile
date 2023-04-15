@@ -1,5 +1,5 @@
-build_dir="build"
 working_dir=$(shell pwd)
+build_dir=${working_dir}/build
 executable_name="vEngine"
 
 color_red    := $(shell tput -Txterm setaf 1)
@@ -7,7 +7,7 @@ color_green  := $(shell tput -Txterm setaf 2)
 color_yellow := $(shell tput -Txterm setaf 3)
 color_clear 	 := $(shell tput -Txterm sgr0)
 
-all: clean config build run
+all: config build run
 
 build: config
 	@(echo "\n${color_green}Building ${executable_name}${color_clear}")
@@ -21,7 +21,7 @@ config: clean
 
 run:
 	@(echo "\n${color_green}Running executable: ${executable_name}${color_clear}")
-	@(./${build_dir}/${executable_name})
+	@(${build_dir}/${executable_name})
 	@(echo "\n${color_green}Finished successfuly!${color_clear}")
 
 clean:
