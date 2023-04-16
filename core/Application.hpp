@@ -16,6 +16,7 @@ public:
 
     static std::shared_ptr<Application> createInstance();
     bool initialize();
+    void cleanUp();
     void run();
 private:
     inline static std::shared_ptr<Application> instance;

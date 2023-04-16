@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "logging/Logger.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -10,12 +11,6 @@ Application::Application() : isInitialized(false) {}
 
 Application::~Application()
 {
-    assert(isInitialized);
-
-    window->cleanUp();
-    window->destroy();
-
-    GlobalRegister::getInstance().shutDown();
 }
 
 std::shared_ptr<Application> Application::createInstance()
@@ -50,6 +45,16 @@ bool Application::initialize()
     return true;
 }
 
+void Application::cleanUp()
+{
+    assert(isInitialized);
+
+    window->cleanUp();
+    window->destroy();
+
+    GlobalRegister::getInstance().shutDown();
+}
+
 void Application::run()
 {
     if(!isInitialized)
@@ -60,7 +65,9 @@ void Application::run()
 
     while(window->update())
     {
-        std::cout << "Window updated!\n";
+        logging::info("Window updated!");
     }
+
+    cleanUp();
 }
 }

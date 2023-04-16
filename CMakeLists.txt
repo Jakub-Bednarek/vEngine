@@ -3,6 +3,7 @@ project(vEngine)
 
 SET(CMAKE_CXX_STANDARD 20)
 
+add_subdirectory(vendor)
 add_subdirectory(core)
 
 add_executable(${PROJECT_NAME} Main.cpp)

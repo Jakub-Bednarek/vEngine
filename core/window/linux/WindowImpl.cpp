@@ -1,4 +1,5 @@
 #include "WindowImpl.hpp"
+#include "logging/Logger.hpp"
 
 #include <iostream>
 #include <stdio.h>
@@ -43,33 +44,33 @@ void drawQuad()
 
 bool LinuxWindow::initialize()
 {
-    std::cout << "Initializing LinuxWindow\n";
+    logging::info("Initializing LinuxWindow");
 
     display = XOpenDisplay(nullptr);
 
     if(!display)
     {
-        std::cout << "Failed to create display, exiting\n";
-        exit(0);
+        logging::error("Failed to create display, exiting");
+        return false;
     }
 
     rootWindow = DefaultRootWindow(display);
 
     if(!rootWindow)
     {
-        std::cout << "Failed to create root window, exiting\n";
-        exit(0);
+        logging::error("Failed to create root window, exiting");
+        return false;
     }
 
     visualInfo = glXChooseVisual(display, 0, glAttributes.data());
 
     if(!visualInfo)
     {
-        std::cout << "Failed to set visualInfo for choosen display\n";
-        exit(0);
+        logging::error("Failed to set visualInfo for choosen display");
+        return false;
     }
     
-    std::cout << "Selected visualInfo with id: " << static_cast<void*>(visualInfo->visual) << '\n';
+    logging::info("Selected visualInfo with id: {0:x}"/*, visualInfo->visual->visualid*/);
     
     colorMap = XCreateColormap(display, rootWindow, visualInfo->visual, AllocNone);
     setWindowAttributes.colormap = colorMap;
@@ -82,31 +83,31 @@ bool LinuxWindow::initialize()
     glContext = glXCreateContext(display, visualInfo, nullptr, GL_TRUE);
     glXMakeCurrent(display, window, glContext);
 
-    std::cout << "LinuxWindow created successfully\n";
+    logging::info("LinuxWindow created successfully");
 
     return true;
 }
 
 void LinuxWindow::clear()
 {
-    std::cout << "Clearing LinuxWindow\n";
+    logging::debug("Clearing LinuxWindow");
 }
 
 void LinuxWindow::cleanUp()
 {
-    std::cout << "Cleaning up LinuxWindow\n";
+    logging::debug("Cleaning up LinuxWindow");
 }
 
 void LinuxWindow::flush()
 {
-    std::cout << "Flushing LinuxWindow\n";
+    logging::debug("Flushing LinuxWindow");
 }
 
 void LinuxWindow::destroy()
 {
     if(isDestroyed)
     {
-        std::cout << "LinuxWindow already destroyed\n";
+        logging::warn("LinuxWindow already destroyed");
         return;
     }
     
@@ -115,7 +116,7 @@ void LinuxWindow::destroy()
     XDestroyWindow(display, window);
     XCloseDisplay(display);
     isDestroyed = true;
-    std::cout << "Destroying LinuxWindow\n";
+    logging::info("Destroying LinuxWindow");
 }
 
 bool LinuxWindow::update()

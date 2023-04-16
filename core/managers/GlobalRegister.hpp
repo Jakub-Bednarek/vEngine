@@ -13,7 +13,7 @@ class GlobalRegister : public IManager, public Singleton<GlobalRegister>
 public:
     GlobalRegister() = default;
     ~GlobalRegister() = default;
-    void startUp();
+    bool startUp();
     void shutDown();
 private:
     void registerManagersForStartUp();

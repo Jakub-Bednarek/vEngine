@@ -8,7 +8,7 @@ class IManager
 {
 public:
     virtual ~IManager() = default;
-    virtual void startUp() = 0;
+    virtual bool startUp() = 0;
     virtual void shutDown() = 0;
 };
 
