@@ -1,11 +1,22 @@
 #include "Application.hpp"
 
 #include <iostream>
+#include <cassert>
 
 namespace vEngine::core
 {
 
 Application::Application() : isInitialized(false) {}
+
+Application::~Application()
+{
+    assert(isInitialized);
+
+    window->cleanUp();
+    window->destroy();
+
+    GlobalRegister::getInstance().shutDown();
+}
 
 std::shared_ptr<Application> Application::createInstance()
 {
@@ -23,6 +34,8 @@ std::shared_ptr<Application> Application::createInstance()
 
 bool Application::initialize()
 {
+    GlobalRegister::getInstance().startUp();
+
     window = WindowFactory::createWindow();
 
     if(!window)

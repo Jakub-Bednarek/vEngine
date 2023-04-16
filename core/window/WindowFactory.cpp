@@ -1,5 +1,8 @@
 #include "WindowFactory.hpp"
+
+#ifdef __linux__
 #include "linux/WindowImpl.hpp"
+#endif
 
 #include <iostream>
 

@@ -104,12 +104,17 @@ void LinuxWindow::flush()
 
 void LinuxWindow::destroy()
 {
+    if(isDestroyed)
+    {
+        std::cout << "LinuxWindow already destroyed\n";
+        return;
+    }
+    
     glXMakeCurrent(display, None, glContext);
     glXDestroyContext(display, glContext);
     XDestroyWindow(display, window);
     XCloseDisplay(display);
     isDestroyed = true;
-
     std::cout << "Destroying LinuxWindow\n";
 }
 
@@ -126,7 +131,6 @@ bool LinuxWindow::update()
     }
     else if (lastEvent.type == KeyPress)
     {
-        destroy();
         return false;
     }
 

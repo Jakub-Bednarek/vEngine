@@ -1,6 +1,7 @@
 #pragma once
 
 #include "window/WindowFactory.hpp"
+#include "managers/GlobalRegister.hpp"
 
 #include <memory>
 
@@ -11,7 +12,7 @@ class Application
 {
 public:
     Application();
-    ~Application() = default;
+    ~Application();
 
     static std::shared_ptr<Application> createInstance();
     bool initialize();
@@ -21,6 +22,7 @@ private:
 
     bool isInitialized;
     std::shared_ptr<IWindow> window;
+    GlobalRegister globalRegister;
 };
 
 }
