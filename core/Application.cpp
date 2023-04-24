@@ -6,13 +6,6 @@
 
 namespace vEngine::core
 {
-
-Application::Application() : isInitialized(false) {}
-
-Application::~Application()
-{
-}
-
 std::shared_ptr<Application> Application::createInstance()
 {
     if(Application::instance)
@@ -27,7 +20,7 @@ std::shared_ptr<Application> Application::createInstance()
     return Application::instance;
 }
 
-bool Application::initialize()
+ErrorCode Application::initialize()
 {
     GlobalRegister::getInstance().startUp();
 
@@ -35,7 +28,7 @@ bool Application::initialize()
 
     if(!window)
     {
-        return false;
+        return ErrorCode::WINDOW_CREATION_FAILURE;
     }
 
     window->initialize();
@@ -43,7 +36,7 @@ bool Application::initialize()
 
     isInitialized = true;
 
-    return true;
+    return ErrorCode::NONE;
 }
 
 void Application::cleanUp()
@@ -56,24 +49,54 @@ void Application::cleanUp()
     GlobalRegister::getInstance().shutDown();
 }
 
-void Application::run()
+void Application::handleShutDown()
+{
+    logging::info("Shutting down application.");
+
+    cleanUp();
+}
+
+ErrorCode Application::run()
 {
     if(!isInitialized)
     {
         std::cout << "Initialize application before running!\n";
-        return;
+        return ErrorCode::APPLICATION_UNINITIALIZED;
     }
 
+    isRunning = true;
     timer.setTimestamp();
-    while(window->update())
+    while(isRunning)
     {
-        auto deltaTime = timer.getElapsedTimeSinceTimestamp();
-        logging::info("Time elapsed in ms: ");
-        logging::info(std::to_string(deltaTime.asMilliseconds()));
-        logging::info("Window updated!");
+        const auto deltaTime = timer.getElapsedTimeSinceTimestamp();
         timer.setTimestamp();
+
+        const auto shouldTerminate = update(deltaTime);
+
+        if(static_cast<bool>(shouldTerminate))
+        {
+            isRunning = false;
+            handleShutDown();
+        }
     }
 
-    cleanUp();
+    return ErrorCode::NONE;
+}
+
+ExitCode Application::update(const utils::TimeStamp& deltaTime)
+{
+    logging::info("Time elapsed in ms: ");
+    logging::info(std::to_string(deltaTime.asMilliseconds()));
+
+    if(!window->update())
+    {
+        return ExitCode::WINDOW_CLOSED;
+    }
+
+    return ExitCode::NONE;
+}
+
+void Application::draw()
+{
 }
 }

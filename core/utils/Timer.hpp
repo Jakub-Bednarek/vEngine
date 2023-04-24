@@ -11,9 +11,6 @@ using Duration = std::chrono::duration<double, std::nano>;
 class TimeStamp
 {
 public:
-    using nanoToMilli = std::ratio<1, 1000>;
-    // using nanoToSecond = std::ratio<
-
     TimeStamp(): duration(0) {}
     TimeStamp(const Duration duration): duration(duration) {}
 
