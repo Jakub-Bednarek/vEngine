@@ -70,7 +70,7 @@ bool LinuxWindow::initialize()
         return false;
     }
     
-    logging::info("Selected visualInfo with id: {0:x}"/*, visualInfo->visual->visualid*/);
+    logging::info("Selected visualInfo with id: {}", visualInfo->visual->visualid);
     
     colorMap = XCreateColormap(display, rootWindow, visualInfo->visual, AllocNone);
     setWindowAttributes.colormap = colorMap;

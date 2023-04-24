@@ -85,8 +85,7 @@ ErrorCode Application::run()
 
 ExitCode Application::update(const utils::TimeStamp& deltaTime)
 {
-    logging::info("Time elapsed in ms: ");
-    logging::info(std::to_string(deltaTime.asMilliseconds()));
+    logging::info("Time elapsed: {0:.2f}ms", deltaTime.asMilliseconds());
 
     if(!window->update())
     {

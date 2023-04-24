@@ -20,8 +20,9 @@ public:
     static constexpr auto mainLoggerName = "console";
     static constexpr auto fileLoggerName = "fileLogger";
     static constexpr auto defaultLogDir = "logs/basic-log.txt";
-    static constexpr auto fileLoggingEnabled = false;
+    static constexpr auto fileLoggerEnabled = true;
 
+    inline static bool fileLoggerInitialized = false;
 private:
     void createLogger();
 };
