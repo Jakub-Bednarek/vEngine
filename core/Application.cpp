@@ -39,6 +39,7 @@ bool Application::initialize()
     }
 
     window->initialize();
+    timer.start();
 
     isInitialized = true;
 
@@ -63,9 +64,14 @@ void Application::run()
         return;
     }
 
+    timer.setTimestamp();
     while(window->update())
     {
+        auto deltaTime = timer.getElapsedTimeSinceTimestamp();
+        logging::info("Time elapsed in ms: ");
+        logging::info(std::to_string(deltaTime.asMilliseconds()));
         logging::info("Window updated!");
+        timer.setTimestamp();
     }
 
     cleanUp();

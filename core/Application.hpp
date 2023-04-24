@@ -2,6 +2,7 @@
 
 #include "window/WindowFactory.hpp"
 #include "managers/GlobalRegister.hpp"
+#include "utils/Timer.hpp"
 
 #include <memory>
 
@@ -14,16 +15,20 @@ public:
     Application();
     ~Application();
 
-    static std::shared_ptr<Application> createInstance();
-    bool initialize();
-    void cleanUp();
     void run();
+    void cleanUp();
+    bool initialize();
+    static std::shared_ptr<Application> createInstance();
+private:
+    void update() {}
+    void draw() {}
 private:
     inline static std::shared_ptr<Application> instance;
 
     bool isInitialized;
     std::shared_ptr<IWindow> window;
     GlobalRegister globalRegister;
+    utils::Timer<> timer;
 };
 
 }
