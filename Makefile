@@ -14,10 +14,20 @@ build: config
 	@(echo "${color_yellow}Running make${color_clear}")
 	@(cd ${build_dir} && make)
 
-config: clean
+config:
 	@(echo "\n${color_yellow}Running config${color_clear}")
-	@mkdir ${build_dir}
-	@(cd ${build_dir} && cmake ..)
+	@if [ ! -d ${build_dir} ]; then mkdir ${build_dir}; fi
+	@(cd ${build_dir} && cmake ..  -DDEBUG_BUILD=TRUE -DFLY_BUILD=FALSE -DRELEASE_BUILD=FALSE)
+
+config_fly:
+	@(echo "\n${color_yellow}Running config with fly mode${color_clear}")
+	@if [ ! -d ${build_dir} ]; then mkdir ${build_dir}; fi
+	@(cd ${build_dir} && cmake ..  -DDEBUG_BUILD=FALSE -DFLY_BUILD=TRUE -DRELEASE_BUILD=FALSE)
+
+config_release:
+	@(echo "\n${color_yellow}Running config with release mode${color_clear}")
+	@if [ ! -d ${build_dir} ]; then mkdir ${build_dir}; fi
+	@(cd ${build_dir} && cmake .. -DDEBUG_BUILD=FALSE -DFLY_BUILD=FALSE -DRELEASE_BUILD=TRUE)
 
 run:
 	@(echo "\n${color_green}Running executable: ${executable_name}${color_clear}")
