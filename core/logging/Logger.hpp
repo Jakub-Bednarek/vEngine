@@ -7,22 +7,19 @@
 
 #include <string>
 
-constexpr auto isDebug = true;
-
 namespace vEngine::logging
 {
 template <typename... Args>
 void debug(const std::string& message, Args... args)
 {
-    if constexpr(isDebug)
-    {
+    #ifdef VDEBUG
         spdlog::get(core::LoggerManager::mainLoggerName)->debug(fmt::runtime(message), args...);
 
         if (core::LoggerManager::fileLoggerInitialized)
         {
             spdlog::get(core::LoggerManager::fileLoggerName)->debug(fmt::runtime(message), args...);
         }
-    }
+    #endif // VDEBUG
 }
 
 template <typename... Args>

@@ -21,8 +21,6 @@ public:
     bool startUp();
     void shutDown();
 private:
-    void registerManagersForStartUp();
-
     LoggerManager loggerManager;
     WindowManager windowManager;
 };

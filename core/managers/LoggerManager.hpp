@@ -2,7 +2,7 @@
 #define LOGGER_MANAGER_HPP
 
 #ifndef SPDLOG_HEADER_ONLY
-#define SPDLOG_HEADER_ONLY
+    #define SPDLOG_HEADER_ONLY
 #endif
 
 #include "IManager.hpp"
