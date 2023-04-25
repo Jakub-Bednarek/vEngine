@@ -42,7 +42,7 @@ private:
 
     bool isInitialized = false;
     bool isRunning = false;
-    std::shared_ptr<IWindow> window;
+    std::shared_ptr<IWindow> windowInstance;
     GlobalRegister globalRegister;
     utils::Timer<> timer;
 };

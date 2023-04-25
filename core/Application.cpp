@@ -1,5 +1,6 @@
 #include "Application.hpp"
 #include "logging/Logger.hpp"
+#include "managers/WindowManager.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -23,16 +24,9 @@ std::shared_ptr<Application> Application::createInstance()
 ErrorCode Application::initialize()
 {
     GlobalRegister::getInstance().startUp();
-
-    window = WindowFactory::createWindow();
-
-    if(!window)
-    {
-        return ErrorCode::WINDOW_CREATION_FAILURE;
-    }
-
-    window->initialize();
     timer.start();
+
+    windowInstance = WindowManager::getInstance().getWindowInstance();
 
     isInitialized = true;
 
@@ -42,9 +36,6 @@ ErrorCode Application::initialize()
 void Application::cleanUp()
 {
     assert(isInitialized);
-
-    window->cleanUp();
-    window->destroy();
 
     GlobalRegister::getInstance().shutDown();
 }
@@ -87,7 +78,7 @@ ExitCode Application::update(const utils::TimeStamp& deltaTime)
 {
     logging::info("Time elapsed: {0:.2f}ms", deltaTime.asMilliseconds());
 
-    if(!window->update())
+    if(!windowInstance->update())
     {
         return ExitCode::WINDOW_CLOSED;
     }

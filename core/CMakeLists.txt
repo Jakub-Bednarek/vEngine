@@ -9,6 +9,7 @@ set(CORE_HEADER_FILES
     ${WINDOW_INCLUDE}/linux/WindowImpl.hpp
     ${UTILS_INCLUDE}/Singleton.hpp
     ${MANAGERS_INCLUDE}/LoggerManager.hpp
+    ${MANAGERS_INCLUDE}/WindowManager.hpp
     ${MANAGERS_INCLUDE}/GlobalRegister.hpp)
     
 set(CORE_SOURCE_FILES
@@ -16,6 +17,7 @@ set(CORE_SOURCE_FILES
     ${WINDOW_INCLUDE}/WindowFactory.cpp
     ${WINDOW_INCLUDE}/linux/WindowImpl.cpp
     ${MANAGERS_INCLUDE}/LoggerManager.cpp
+    ${MANAGERS_INCLUDE}/WindowManager.cpp
     ${MANAGERS_INCLUDE}/GlobalRegister.cpp
     )
 
