@@ -7,6 +7,8 @@ set(DEBUG_BUILD TRUE CACHE BOOL "Enable debug build")
 set(FLY_BUILD FALSE CACHE BOOL "Enably fly build")
 set(RELEASE_BUILD FALSE CACHE BOOL "Enable release build")
 
+include(core/cmake/UnitTests.cmake)
+
 if(FLY_BUILD)
     add_compile_definitions(VFLY)
     message(STATUS "BUILD_TYPE=FLY")
