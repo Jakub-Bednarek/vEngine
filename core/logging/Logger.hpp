@@ -1,7 +1,7 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
-#include "managers/LoggerManager.hpp"
+#include "managers/LoggerManager/LoggerManager.hpp"
 
 #include <spdlog/spdlog.h>
 

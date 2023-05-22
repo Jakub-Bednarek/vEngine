@@ -1,6 +1,8 @@
 #ifndef IMANAGER_HPP
 #define IMANAGER_HPP
 
+#include <cstdint>
+
 namespace vEngine::core
 {
 

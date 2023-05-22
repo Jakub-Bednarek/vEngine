@@ -5,13 +5,12 @@
     #define SPDLOG_HEADER_ONLY
 #endif
 
-#include "IManager.hpp"
-#include "utils/Singleton.hpp"
+#include "ILoggerManager.hpp"
 
 namespace vEngine::core
 {
 
-class LoggerManager : public IManager, public Singleton<LoggerManager>
+class LoggerManager : public ILoggerManager
 {
 public:
     bool startUp() override;

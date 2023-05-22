@@ -1,19 +1,23 @@
 #include "GlobalRegister.hpp"
 #include "logging/Logger.hpp"
 
+#include <iostream>
+
 namespace vEngine::core
 {
+void GlobalRegister::createStaticManagers(std::shared_ptr<ILoggerManager> loggerManagerInstance,
+                                          std::shared_ptr<IWindowManager> windowManagerInstance)
+{
+    loggerManager = std::move(loggerManagerInstance);
+    windowManager = std::move(windowManagerInstance);
+}
 
 bool GlobalRegister::startUp()
 {
     std::cout << "Initializing all managers.\n";
 
-    assert(LoggerManager::getInstancePtr());
-    assert(WindowManager::getInstancePtr());
-
-    loggerManager.startUp();
-    windowManager.startUp();
-
+    loggerManager->startUp();
+    windowManager->startUp();
 
     logging::info("All managers successfully initialized.");
 
@@ -22,7 +26,7 @@ bool GlobalRegister::startUp()
 
 void GlobalRegister::shutDown()
 {
-    windowManager.shutDown();
-    loggerManager.shutDown();
+    windowManager->shutDown();
+    loggerManager->shutDown();
 }
 }

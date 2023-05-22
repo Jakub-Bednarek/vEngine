@@ -1,6 +1,5 @@
 #include "Application.hpp"
 #include "logging/Logger.hpp"
-#include "managers/WindowManager.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -16,17 +15,20 @@ std::shared_ptr<Application> Application::createInstance()
     }
 
     Application::instance = std::make_shared<Application>();
-    std::cout << "Successfully created Application instance.\n";
+    std::cout << "Successfully created Application instance.\nCreating static managers...\n";
+
+    GlobalRegister::createStaticManagers();
+    std::cout << "Static managers created\n";
 
     return Application::instance;
 }
 
 ErrorCode Application::initialize()
 {
-    GlobalRegister::getInstance().startUp();
+    globalRegister.startUp();
     timer.start();
 
-    windowInstance = WindowManager::getInstance().getWindowInstance();
+    windowInstance = GlobalRegister::getWindowManager()->getWindowInstance();
 
     isInitialized = true;
 
@@ -37,7 +39,7 @@ void Application::cleanUp()
 {
     assert(isInitialized);
 
-    GlobalRegister::getInstance().shutDown();
+    globalRegister.shutDown();
 }
 
 void Application::handleShutDown()

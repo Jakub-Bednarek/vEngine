@@ -7,17 +7,18 @@ set(CORE_HEADER_FILES
     ${WINDOW_INCLUDE}/IWindow.hpp
     ${WINDOW_INCLUDE}/WindowFactory.hpp
     ${WINDOW_INCLUDE}/linux/WindowImpl.hpp
-    ${UTILS_INCLUDE}/Singleton.hpp
-    ${MANAGERS_INCLUDE}/LoggerManager.hpp
-    ${MANAGERS_INCLUDE}/WindowManager.hpp
+    ${MANAGERS_INCLUDE}/LoggerManager/LoggerManager.hpp
+    ${MANAGERS_INCLUDE}/LoggerManager/ILoggerManager.hpp
+    ${MANAGERS_INCLUDE}/WindowManager/WindowManager.hpp
+    ${MANAGERS_INCLUDE}/WindowManager/IWindowManager.hpp
     ${MANAGERS_INCLUDE}/GlobalRegister.hpp)
     
 set(CORE_SOURCE_FILES
     Application.cpp
     ${WINDOW_INCLUDE}/WindowFactory.cpp
     ${WINDOW_INCLUDE}/linux/WindowImpl.cpp
-    ${MANAGERS_INCLUDE}/LoggerManager.cpp
-    ${MANAGERS_INCLUDE}/WindowManager.cpp
+    ${MANAGERS_INCLUDE}/LoggerManager/LoggerManager.cpp
+    ${MANAGERS_INCLUDE}/WindowManager/WindowManager.cpp
     ${MANAGERS_INCLUDE}/GlobalRegister.cpp
     )
 
