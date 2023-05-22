@@ -1,5 +1,6 @@
 #include "WindowImpl.hpp"
 #include "logging/Logger.hpp"
+#include "renderer/Renderer.hpp"
 
 #include <iostream>
 #include <stdio.h>
@@ -19,27 +20,6 @@ LinuxWindow::~LinuxWindow()
         cleanUp();
         destroy();
     }
-}
-
-void drawQuad()
-{
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 20.0f);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-
-    glBegin(GL_QUADS);
-    glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(-0.75f, -0.75, 0.0);
-    glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.75f, -0.75, 0.0);
-    glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.75f, 0.75, 0.0);
-    glColor3f(1.0f, 1.0f, 0.0f); glVertex3f(-0.75f, 0.75, 0.0);
-    glEnd();
 }
 
 bool LinuxWindow::initialize()
@@ -125,10 +105,7 @@ bool LinuxWindow::update()
 
     if(lastEvent.type == Expose)
     {
-        XGetWindowAttributes(display, window, &windowAtributes);
-        glViewport(0, 0, windowAtributes.width, windowAtributes.height);
-        drawQuad();
-        glXSwapBuffers(display, window);
+        Renderer::render(display, window, &windowAtributes);
     }
     else if (lastEvent.type == KeyPress)
     {
