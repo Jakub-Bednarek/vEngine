@@ -6,9 +6,15 @@
 namespace vEngine::core
 {
 
+namespace
+{
+constexpr Priority loggerManagerPriority = 10;
+}
+
 class ILoggerManager : public IManager
 {
 public:
+    ILoggerManager(): IManager(loggerManagerPriority) {}
     virtual ~ILoggerManager() = default;
 };
 

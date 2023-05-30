@@ -9,9 +9,15 @@
 namespace vEngine::core
 {
 
+namespace
+{
+constexpr Priority windowManagerPriority = 9;
+}
+
 class IWindowManager : public IManager
 {
 public:
+    IWindowManager(): IManager(windowManagerPriority) {}
     virtual ~IWindowManager() = default;
     virtual std::shared_ptr<IWindow> getWindowInstance() const = 0;
 };

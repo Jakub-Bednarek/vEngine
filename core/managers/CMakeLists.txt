@@ -1,0 +1,3 @@
+add_ut_directory(tests)
+add_ut_directory(LoggerManager/tests)
+add_ut_directory(WindowManager/tests)

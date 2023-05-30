@@ -1,31 +1,81 @@
 #ifndef GLOBAL_REGISTER_HPP
 #define GLOBAL_REGISTER_HPP
 
-#include "LoggerManager/LoggerManager.hpp"
-#include "WindowManager/WindowManager.hpp"
+#include "IManager.hpp"
+#include "logging/Logger.hpp"
 
 #include <map>
 #include <memory>
-#include <cassert>
+#include <map>
+#include <algorithm>
+#include <iostream>
 
 namespace vEngine::core
 {
 
 class GlobalRegister 
 {
+    struct ManagerKey
+    {
+        Priority priority;
+        const char* name;
+    };
+
+    struct ManagerKeyComparator
+    {
+        bool operator()(const ManagerKey& lhs, const ManagerKey& rhs) const
+        {
+            return lhs.priority > rhs.priority;
+        }
+    };
+
+    using ManagersMap = std::map<ManagerKey, std::shared_ptr<IManager>, ManagerKeyComparator>;
 public:
     ~GlobalRegister() = default;
     bool startUp();
     void shutDown();
+    void registerAllManagers();
 
-    static void createStaticManagers(std::shared_ptr<ILoggerManager> = std::make_shared<LoggerManager>(),
-                                     std::shared_ptr<IWindowManager> = std::make_shared<WindowManager>());
+    template <typename T>
+    bool registerManager()
+    {
+        auto managerName = typeid(T).name();
+        if(find(managerName) != registeredManagers.end())
+        {
+            return false;
+        }
 
-    static std::shared_ptr<ILoggerManager> getLoggerManager() { assert(loggerManager); return loggerManager; }
-    static std::shared_ptr<IWindowManager> getWindowManager()  { assert(windowManager); return windowManager; }
+        auto managerToRegister = std::make_shared<T>();
+        registeredManagers.emplace(ManagerKey { .priority = managerToRegister->getPriority(), .name = std::move(managerName) }, std::move(managerToRegister));
+        return true;
+    }
+
+    template <typename T>
+    T* getManagerPtr()
+    {
+        const auto managerName = typeid(T).name();
+        auto foundManager = find(managerName);
+        if(foundManager == registeredManagers.end())
+        {
+            logging::error("Failed to find {0} manager, used before register.", managerName);
+            assert(false);
+        }
+
+        return dynamic_cast<T*>(foundManager->second.get());
+    }
+
+    template <typename T>
+    T& getManager()
+    {
+        return *getManagerPtr<T>();
+    }
 private:
-    inline static std::shared_ptr<ILoggerManager> loggerManager = nullptr;
-    inline static std::shared_ptr<IWindowManager> windowManager = nullptr;
+    ManagersMap::iterator find(const char* name)
+    {
+        return std::find_if(registeredManagers.begin(), registeredManagers.end(), [&name](const auto& managerEntry) { return strcmp(name, managerEntry.first.name) == 0; });
+    }
+
+    ManagersMap registeredManagers;
 };
 
 }

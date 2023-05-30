@@ -13,6 +13,8 @@ namespace vEngine::core
 class LoggerManager : public ILoggerManager
 {
 public:
+    LoggerManager() = default;
+    ~LoggerManager() = default;
     bool startUp() override;
     void shutDown() override;
 

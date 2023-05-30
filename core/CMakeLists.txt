@@ -29,3 +29,5 @@ add_library(Core
 target_link_libraries(Core spdlog X11 GL GLU)
 
 target_include_directories(Core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_subdirectory(managers)
